@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" attributeFormDefault="unqualified">  
+    <xs:element name="Features">  
+        <xs:annotation>  
+            <xs:documentation>QueryChange</xs:documentation>  
+        </xs:annotation>  
+        <xs:complexType>  
+            <xs:sequence>  
+                <xs:element name="networkName"/>  
+                <xs:element name="FeatureCollection" maxOccurs="unbounded">  
+                    <xs:complexType>  
+                        <xs:sequence>  
+                            <xs:element name="featureMember" maxOccurs="unbounded">  
+                                <xs:complexType>  
+                                    <xs:sequence>  
+                                        <xs:element name="Road">  
+                                            <xs:complexType>  
+                                                <xs:sequence>  
+                                                    <xs:element name="lineId"/>  
+                                                    <xs:element name="lineName"/>  
+                                                    <xs:element name="passNodeIds"/>  
+                                                    <xs:element name="passNodeNames"/>  
+                                                    <xs:element name="passNodeCoordinates"/>  
+                                                    <xs:element name="geometry">  
+                                                        <xs:complexType>  
+                                                            <xs:sequence>  
+                                                                <xs:element ref="gml:LineString"/>  
+                                                            </xs:sequence>  
+                                                        </xs:complexType>  
+                                                    </xs:element>  
+                                                </xs:sequence>  
+                                            </xs:complexType>  
+                                        </xs:element>  
+                                    </xs:sequence>  
+                                </xs:complexType>  
+                            </xs:element>  
+                        </xs:sequence>  
+                    </xs:complexType>  
+                </xs:element>  
+            </xs:sequence>  
+        </xs:complexType>  
+    </xs:element>  
+</xs:schema>  
