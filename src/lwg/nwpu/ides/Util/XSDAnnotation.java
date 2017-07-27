@@ -3,6 +3,8 @@ package lwg.nwpu.ides.Util;
 public class XSDAnnotation {
 		//文档名
 		private String documentLabel;
+		//文档文本
+		private String docunmentText;
 		
 		public String getDocumentLabel() {
 			return documentLabel;
@@ -20,6 +22,5 @@ public class XSDAnnotation {
 			this.docunmentText = docunmentText;
 		}
 
-		//文档文本
-		private String docunmentText;
+		
 }

@@ -12,7 +12,7 @@ public class XSDElement {
 	private XSDAnnotation annotation = new XSDAnnotation();
 	
 	// 属性
-	private Map<String, String> attribute = new HashMap<>();
+	private Map<String, XSDAttribute> attribute = new HashMap<>();
 
 	//子节点
 	private Map<String, XSDElement> elements = new HashMap<>();
@@ -35,11 +35,11 @@ public class XSDElement {
 
 	}
 
-	public String getAttribute(String attr) {
+	public XSDAttribute getAttribute(String attr) {
 		return attribute.get(attr);
 	}
 
-	public void addAttribute(String attribute, String value) {
+	public void addAttribute(String attribute, XSDAttribute value) {
 		this.attribute.put(attribute, value);
 	}
 

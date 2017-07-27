@@ -54,12 +54,14 @@ public class XSDReader {
 		if ("".equals(XMLConstants.MESSAGE)) {
 			dataElement = element;
 			List<Element> elementNodes = element.elements("element");
-			for (Iterator<Element> iterator = elementNodes.iterator(); iterator.hasNext();) {
+			for (Iterator<Element> iterator = elementNodes.iterator(); iterator
+					.hasNext();) {
 				Element element2 = (Element) iterator.next();
 				paseData(element2, elementPath);
 			}
 		} else {
-			basePath = "//" + getXSDDefaultNamespace() + "element[@name=\"" + XMLConstants.MESSAGE + "\"]";
+			basePath = "//" + getXSDDefaultNamespace() + "element[@name=\""
+					+ XMLConstants.MESSAGE + "\"]";
 			dataElement = (Element) element.selectSingleNode(basePath);
 			paseData(dataElement, elementPath);
 		}
@@ -106,9 +108,11 @@ public class XSDReader {
 
 		// 组装下一个element元素的XPath
 
-		String currentXsdPath = xsdPath + "[@name=\"" + nodeName + "\"]" + "/" + getXSDDefaultNamespace()
+		String currentXsdPath = xsdPath + "[@name=\"" + nodeName + "\"]" + "/"
+				+ getXSDDefaultNamespace()
 
-				+ "complexType/" + getXSDDefaultNamespace() + "sequence/" + getXSDDefaultNamespace()
+				+ "complexType/" + getXSDDefaultNamespace() + "sequence/"
+				+ getXSDDefaultNamespace()
 
 				+ "element";
 
@@ -125,29 +129,78 @@ public class XSDReader {
 
 				Element ele = (Element) nodes.next();
 
-				XSDElement xsdChild =  paseData(ele, currentXsdPath);
+				XSDElement xsdChild = paseData(ele, currentXsdPath);
 
 				xsdNode.addElements(xsdChild.getName(), xsdChild);
 			}
 
 		} // 该element为叶子
 
-		
-
-		Node annotationText = element.selectSingleNode(xsdPath + "[@name=\"" + nodeName + "\"]/"
-				+ getXSDDefaultNamespace() + "annotation/" + getXSDDefaultNamespace() + "documentation");
+		Node annotationText = element.selectSingleNode(xsdPath + "[@name=\""
+				+ nodeName + "\"]/" + getXSDDefaultNamespace() + "annotation/"
+				+ getXSDDefaultNamespace() + "documentation");
 
 		if (annotationText != null)
-			xsdNode.getAnnotation().setDocunmentText(annotationText.getText().trim());
+			xsdNode.getAnnotation().setDocunmentText(
+					annotationText.getText().trim());
 
-		Element annotationLabel = (Element) element
-				.selectSingleNode(xsdPath + "[@name=\"" + nodeName + "\"]/" + getXSDDefaultNamespace() + "annotation/"
-						+ getXSDDefaultNamespace() + "appInfo/" + getXSDDefaultNamespace() + "meta.element");
+		Element annotationLabel = (Element) element.selectSingleNode(xsdPath
+				+ "[@name=\"" + nodeName + "\"]/" + getXSDDefaultNamespace()
+				+ "annotation/" + getXSDDefaultNamespace() + "appInfo/"
+				+ getXSDDefaultNamespace() + "meta.element");
 
-		// 获取节点类型属性
 		if (annotationLabel != null)
-			xsdNode.getAnnotation().setDocumentLabel(annotationLabel.attributeValue("label"));
-		
+			xsdNode.getAnnotation().setDocumentLabel(
+					annotationLabel.attributeValue("label"));
+
+		List<Node> attributes = element.selectNodes(xsdPath + "[@name=\""
+				+ nodeName + "\"]/" + getXSDDefaultNamespace() + "complexType/"
+				+ getXSDDefaultNamespace() + "attribute");
+
+		if (attributes != null && attributes.size() > 0) {// 如果下面还有element,说明不是叶子
+
+			Iterator<Node> nodes = attributes.iterator();
+
+			while (nodes.hasNext()) {
+
+				Element attribute = (Element) nodes.next();
+
+				String attributeName = attribute.attributeValue("name");
+				String text = "";
+				String label = "";
+				Node attributeText = element.selectSingleNode(xsdPath
+						+ "[@name=\"" + nodeName + "\"]/"
+						+ getXSDDefaultNamespace() + "complexType/"
+						+ getXSDDefaultNamespace() + "attribute/"
+						+ getXSDDefaultNamespace() + "annotation/"
+						+ getXSDDefaultNamespace() + "documentation");
+
+				if (attributeText != null)
+					text = attributeText.getText().trim();
+
+				Element attributeLabel = (Element) element
+						.selectSingleNode(xsdPath + "[@name=\"" + nodeName
+								+ "\"]/" + getXSDDefaultNamespace()
+								+ "complexType/" + getXSDDefaultNamespace()
+								+ "attribute/" + getXSDDefaultNamespace()
+								+ "annotation/" + getXSDDefaultNamespace()
+								+ "appInfo/" + getXSDDefaultNamespace()
+								+ "meta.attribute");
+
+				if (attributeLabel != null)
+					label = attributeLabel.attributeValue("label");
+
+				XSDAttribute XSDAttribute = new XSDAttribute();
+
+				XSDAttribute.setName(attributeName);
+				XSDAttribute.setDocunmentText(text);
+				XSDAttribute.setDocumentLabel(label);
+
+				xsdNode.addAttribute(attributeName, XSDAttribute);
+			}
+
+		}
+
 		return xsdNode;
 
 	}
