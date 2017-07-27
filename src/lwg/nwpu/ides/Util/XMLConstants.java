@@ -2,16 +2,19 @@ package lwg.nwpu.ides.Util;
 
 public interface XMLConstants {
 	// 默认数据节点，设置为空则认为根目录为默认数据节点
-	public static final String MESSAGE = "Features";
+	public static final String MESSAGE = "";
 
 	// xml编码
 	public static final String ENCODING = "UTF-8";
 
 	// xsd默认命名空间,设置为空则没有默认命名空间
 	public static final String XSD_DEFAULT_NAMESPACE = "xs";
+	
+	//
+	public static final String XSD_APP_INFO = "appInfo";
 
 	// xsd定义的默认数据节点，设置为空则认为根目录为默认数据节点
-	public static final String XSD_DEFAULT_DATANODE = "Features";
+	public static final String XSD_DEFAULT_DATANODE = "";
 
 	// xsd复合类型节点
 	public static final String XSD_COMPLEX_TYPE = "complexType";

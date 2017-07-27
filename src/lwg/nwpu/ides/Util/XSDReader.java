@@ -208,7 +208,7 @@ public class XSDReader {
 			String realPath = XSDReader.class.getResource("/").getPath();
 			XSDReader xsdReader = new XSDReader();
 
-			List<XSDNode> nodes = xsdReader.paserXSD("feature.xsd");
+			List<XSDNode> nodes = xsdReader.paserXSD("RmConfig.xsd");
 
 			for (XSDNode node : nodes) {
 				System.out.println(node.getUnboundedXpath());
