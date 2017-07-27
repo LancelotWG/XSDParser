@@ -1,13 +1,17 @@
 package lwg.nwpu.ides.Util;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 
 public class XSDReader {
@@ -33,34 +37,33 @@ public class XSDReader {
 
 		// ByteArrayInputStream byteArrayInputStream = new
 		// ByteArrayInputStream(xsd.getBytes(BaseConstants.XM LENCODING));
-
-		Document doc = saxReader.read(xsd);
-
+		Map map = new HashMap();  
+        map.put("xs",XMLConstants.NAMESPACEADDRESS);         
+        File file = new File(xsd);  
+        saxReader.getDocumentFactory().setXPathNamespaceURIs(map); 
+		Document doc = saxReader.read(file);
+        
 		Element element = doc.getRootElement();
 
 		String basePath = null;
 		Element dataElement = null;
-		if ("".equals(XMLConstants.XSD_DEFAULT_NAMESPACE)) {
-			if ("".equals(XMLConstants.MESSAGE)) {
-				dataElement = element;
-			} else {
-				basePath = "//element[@name=\"" + XMLConstants.MESSAGE + "\"]";
-				dataElement = (Element) element.selectSingleNode(basePath);
-			}
-		} else {
-			basePath = "//" + XMLConstants.XSD_DEFAULT_NAMESPACE + ":element[@name=\"" + XMLConstants.MESSAGE + "\"]";
-			dataElement = (Element) element.selectSingleNode(basePath);
-		}
-
 		String elementPath = null;
-		if ("".equals(XMLConstants.XSD_DEFAULT_NAMESPACE)) {
-			elementPath = "//element";
-		} else {
-			elementPath = "//" + XMLConstants.XSD_DEFAULT_NAMESPACE + ":element";
-		}
-
-		paseData(dataElement, "//", elementPath, "//");
-
+		
+		elementPath = "//" + getXSDDefaultNamespace() + "element";
+		
+		if ("".equals(XMLConstants.MESSAGE)) {
+				dataElement = element;
+				List<Element> elementNodes = element.elements("element");
+				for (Iterator<Element> iterator = elementNodes.iterator(); iterator.hasNext();) {
+					Element element2 = (Element) iterator.next();
+					paseData(element2, "//", elementPath, "//");
+				}
+			} else {
+				basePath = "//" + getXSDDefaultNamespace() + "element[@name=\"" + XMLConstants.MESSAGE + "\"]";
+				dataElement = (Element) element.selectSingleNode(basePath);
+				paseData(dataElement, "//", elementPath, "//");
+			}
+		
 		return list;
 
 	}
@@ -81,6 +84,14 @@ public class XSDReader {
 	 * 
 	 */
 
+	private String getXSDDefaultNamespace() {
+		if ("".equals(XMLConstants.XSD_DEFAULT_NAMESPACE)) {
+			return "";
+		}else{
+			return XMLConstants.XSD_DEFAULT_NAMESPACE + ":";
+		}
+	}
+	
 	public void paseData(Element element, String xPath, String xsdPath, String unboundedXpath) {
 
 		if (element == null)
@@ -106,12 +117,12 @@ public class XSDReader {
 
 		// 组装下一个element元素的XPath
 
-		String currentXsdPath = xsdPath + "[@name=\"" + nodeName + "\"]" + "/" + XMLConstants.XSD_DEFAULT_NAMESPACE
+		String currentXsdPath = xsdPath + "[@name=\"" + nodeName + "\"]" + "/" + getXSDDefaultNamespace()
 
-				+ ":complexType/" + XMLConstants.XSD_DEFAULT_NAMESPACE + ":sequence/"
-				+ XMLConstants.XSD_DEFAULT_NAMESPACE
+				+ "complexType/" + getXSDDefaultNamespace() + "sequence/"
+				+ getXSDDefaultNamespace()
 
-				+ ":element";
+				+ "element";
 
 		// 查找该节点下所有的element元素
 
@@ -147,9 +158,9 @@ public class XSDReader {
 
 			Node annotationNode = element
 
-					.selectSingleNode(xsdPath + "[@name=\"" + nodeName + "\"]/" + XMLConstants.XSD_DEFAULT_NAMESPACE
+					.selectSingleNode(xsdPath + "[@name=\"" + nodeName + "\"]/" + getXSDDefaultNamespace()
 
-							+ ":annotation/" + XMLConstants.XSD_DEFAULT_NAMESPACE + ":documentation");
+							+ "annotation/" + getXSDDefaultNamespace() + "documentation");
 
 			if (annotationNode != null)
 
@@ -167,10 +178,10 @@ public class XSDReader {
 
 			} else {
 
-				String spath = xsdPath + "[@name=\"" + nodeName + "\"]/" + XMLConstants.XSD_DEFAULT_NAMESPACE
-						+ ":simpleType/"
+				String spath = xsdPath + "[@name=\"" + nodeName + "\"]/" + getXSDDefaultNamespace()
+						+ "simpleType/"
 
-						+ XMLConstants.XSD_DEFAULT_NAMESPACE + ":restriction";
+						+ getXSDDefaultNamespace() + "restriction";
 
 				Element typeNode = (Element) element.selectSingleNode(spath);
 
@@ -208,7 +219,7 @@ public class XSDReader {
 			String realPath = XSDReader.class.getResource("/").getPath();
 			XSDReader xsdReader = new XSDReader();
 
-			List<XSDNode> nodes = xsdReader.paserXSD("RmConfig.xsd");
+			List<XSDNode> nodes = xsdReader.paserXSD("RmConfig.cxsd");
 
 			for (XSDNode node : nodes) {
 				System.out.println(node.getUnboundedXpath());

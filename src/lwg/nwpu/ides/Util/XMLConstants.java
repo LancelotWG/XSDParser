@@ -14,7 +14,7 @@ public interface XMLConstants {
 	public static final String XSD_APP_INFO = "appInfo";
 
 	// xsd定义的默认数据节点，设置为空则认为根目录为默认数据节点
-	public static final String XSD_DEFAULT_DATANODE = "";
+	public static final String XSD_DEFAULT_DATANODE = "xs";
 
 	// xsd复合类型节点
 	public static final String XSD_COMPLEX_TYPE = "complexType";
@@ -65,7 +65,7 @@ public interface XMLConstants {
 
 	public static final String NAMESPACE = "xsl";
 
-	public static final String NAMESPACEADDRESS = "http://www.w3.org/1999/XSL/Transform";
+	public static final String NAMESPACEADDRESS = "http://www.w3.org/2001/XMLSchema";
 
 	public static final String TEMPLATE = "template";
 
