@@ -168,21 +168,14 @@ public class XSDReader {
 				String attributeName = attribute.attributeValue("name");
 				String text = "";
 				String label = "";
-				Node attributeText = element.selectSingleNode(xsdPath
-						+ "[@name=\"" + nodeName + "\"]/"
-						+ getXSDDefaultNamespace() + "complexType/"
-						+ getXSDDefaultNamespace() + "attribute/"
-						+ getXSDDefaultNamespace() + "annotation/"
+				Node attributeText = attribute.selectSingleNode(getXSDDefaultNamespace() + "annotation/"
 						+ getXSDDefaultNamespace() + "documentation");
 
 				if (attributeText != null)
 					text = attributeText.getText().trim();
 
-				Element attributeLabel = (Element) element
-						.selectSingleNode(xsdPath + "[@name=\"" + nodeName
-								+ "\"]/" + getXSDDefaultNamespace()
-								+ "complexType/" + getXSDDefaultNamespace()
-								+ "attribute/" + getXSDDefaultNamespace()
+				Element attributeLabel = (Element) attribute
+						.selectSingleNode(getXSDDefaultNamespace()
 								+ "annotation/" + getXSDDefaultNamespace()
 								+ "appInfo/" + getXSDDefaultNamespace()
 								+ "meta.attribute");

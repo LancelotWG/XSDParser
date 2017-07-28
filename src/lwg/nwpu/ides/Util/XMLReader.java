@@ -67,8 +67,8 @@ public class XMLReader {
 			
 			String json = jsonArray.toString();
 			
-			System.out.println(json);
-			//System.out.println(jsonObject);
+			//System.out.println(json);
+			System.out.println(jsonObject);
 			
 			//xmlReader.showJson();
 			int a = 1;
