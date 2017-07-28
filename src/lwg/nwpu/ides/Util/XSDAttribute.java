@@ -2,12 +2,25 @@ package lwg.nwpu.ides.Util;
 
 public class XSDAttribute {
 
+	//属性名
 	private String name;
 	
+	//属性值
+	private String value;
+
 	// 文档名
 	private String documentLabel;
+	
 	// 文档文本
 	private String docunmentText;
+	
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
 
 	public String getDocumentLabel() {
 		return documentLabel;

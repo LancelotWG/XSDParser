@@ -23,8 +23,8 @@ public class ValidataXML {
      * 通过XSD（XML Schema）校验XML 
      */ 
     public static void validateXMLByXSD() { 
-        String xmlFileName = "note.xml"; 
-        String xsdFileName = "note.xsd"; 
+        String xmlFileName = "rm.cfg"; 
+        String xsdFileName = "RmConfig.cxsd"; 
         try { 
             //创建默认的XML错误处理器 
             XMLErrorHandler errorHandler = new XMLErrorHandler(); 
@@ -33,7 +33,7 @@ public class ValidataXML {
             //解析器在解析时验证 XML 内容。 
             factory.setValidating(true); 
             //指定由此代码生成的解析器将提供对 XML 名称空间的支持。 
-            factory.setNamespaceAware(true); 
+            factory.setNamespaceAware(false); 
             //使用当前配置的工厂参数创建 SAXParser 的一个新实例。 
             SAXParser parser = factory.newSAXParser(); 
             //创建一个读取工具 

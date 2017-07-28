@@ -57,13 +57,13 @@ public class XSDReader {
 			for (Iterator<Element> iterator = elementNodes.iterator(); iterator
 					.hasNext();) {
 				Element element2 = (Element) iterator.next();
-				paseData(element2, elementPath);
+				paseData(element2, elementPath, "//");
 			}
 		} else {
 			basePath = "//" + getXSDDefaultNamespace() + "element[@name=\""
 					+ XMLConstants.MESSAGE + "\"]";
 			dataElement = (Element) element.selectSingleNode(basePath);
-			paseData(dataElement, elementPath);
+			paseData(dataElement, elementPath, "//");
 		}
 
 		return this.map;
@@ -94,7 +94,7 @@ public class XSDReader {
 		}
 	}
 
-	public XSDElement paseData(Element element, String xsdPath) {
+	public XSDElement paseData(Element element, String xsdPath,String XPath) {
 
 		if (element == null)
 			return new XSDElement();
@@ -129,7 +129,7 @@ public class XSDReader {
 
 				Element ele = (Element) nodes.next();
 
-				XSDElement xsdChild = paseData(ele, currentXsdPath);
+				XSDElement xsdChild = paseData(ele, currentXsdPath, XPath);
 
 				xsdNode.addElements(xsdChild.getName(), xsdChild);
 			}

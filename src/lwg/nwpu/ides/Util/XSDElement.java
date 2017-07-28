@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 public class XSDElement {
+	
+	//XML文件元素的XPath
+	private String XPath;
+	
 	// 节点名称
 	private String name;
 
@@ -50,4 +54,14 @@ public class XSDElement {
 	public void addElements(String name,XSDElement element) {
 		this.elements.put(name, element);
 	}
+
+	public String getXPath() {
+		return XPath;
+	}
+
+	public void setXPath(String xPath) {
+		XPath = xPath;
+	}
+	
+	
 }
