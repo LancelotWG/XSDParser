@@ -15,8 +15,24 @@ public class XSDElement {
 	// 节点描述
 	private XSDAnnotation annotation = new XSDAnnotation();
 	
+	public Map<String, XSDAttribute> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Map<String, XSDAttribute> attribute) {
+		this.attributes = attribute;
+	}
+
+	public Map<String, XSDElement> getElements() {
+		return elements;
+	}
+
+	public void setElements(Map<String, XSDElement> elements) {
+		this.elements = elements;
+	}
+
 	// 属性
-	private Map<String, XSDAttribute> attribute = new HashMap<>();
+	private Map<String, XSDAttribute> attributes = new HashMap<>();
 
 	//子节点
 	private Map<String, XSDElement> elements = new HashMap<>();
@@ -40,18 +56,18 @@ public class XSDElement {
 	}
 
 	public XSDAttribute getAttribute(String attr) {
-		return attribute.get(attr);
+		return attributes.get(attr);
 	}
 
 	public void addAttribute(String attribute, XSDAttribute value) {
-		this.attribute.put(attribute, value);
+		this.attributes.put(attribute, value);
 	}
 
-	public XSDElement getElements(String name) {
+	public XSDElement getElement(String name) {
 		return elements.get(name);
 	}
 
-	public void addElements(String name,XSDElement element) {
+	public void addElement(String name,XSDElement element) {
 		this.elements.put(name, element);
 	}
 

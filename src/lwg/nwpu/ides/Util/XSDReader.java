@@ -131,7 +131,7 @@ public class XSDReader {
 
 				XSDElement xsdChild = paseData(ele, currentXsdPath, XPath);
 
-				xsdNode.addElements(xsdChild.getName(), xsdChild);
+				xsdNode.addElement(xsdChild.getName(), xsdChild);
 			}
 
 		} // ¸ÃelementÎªÒ¶×Ó

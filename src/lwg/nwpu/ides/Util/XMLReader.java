@@ -13,6 +13,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class XMLReader {
 	
@@ -59,14 +60,17 @@ public class XMLReader {
 			String realPath = XSDReader.class.getResource("/").getPath();
 			XMLReader xmlReader = new XMLReader();
 			XSDReader xsdReader = new XSDReader();
-			//Map<String, XSDElement> nodes = xsdReader.paserXSD("RmConfig.cxsd");
-			//JSONArray jsonArray = JSONArray.fromObject(nodes);
+			Map<String, XSDElement> nodes = xsdReader.paserXSD("RmConfig.cxsd");
+			JSONObject jsonObject = JSONObject.fromObject(nodes);
 			
-			//String json = jsonArray.toString();
+			JSONArray jsonArray = JSONArray.fromObject(nodes);
 			
-			//System.out.println(json);
+			String json = jsonArray.toString();
 			
-			xmlReader.showJson();
+			System.out.println(json);
+			//System.out.println(jsonObject);
+			
+			//xmlReader.showJson();
 			int a = 1;
 		} catch (Exception ex) {
 
