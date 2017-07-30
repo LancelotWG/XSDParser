@@ -17,41 +17,65 @@ import net.sf.json.JSONObject;
 
 public class XMLReader {
 	
-	private static final String JSON_FITERINGSELECT_STR_1 = "{identifier:\"id\",label: \"name\", items:";// 构造fitleringSelect控件需要的字符串
-	private static final String JSON_FITERINGSELECT_STR_2 = "}";// 构造fitleringSelect控件需要的字符串，这两个地方在这里面使用没什么意义
-																// ，尽管下面用到了，因为是我其他项目的东西，所以不用太纠结
-
-	public void parserXML(String XMLPath) throws Exception {
+	private static final String JSON_FITERINGSELECT_STR_1 = "{identifier:\"id\",label: \"name\", items:";
+	private static final String JSON_FITERINGSELECT_STR_2 = "}";
+	
+	private Map<String, XSDElement> map = new HashMap<String, XSDElement>();
+	
+	public XMLElement parserXML(String XMLPath) throws Exception {
 		// 创建SAXReader对象
 		SAXReader reader = new SAXReader();
 		// 读取文件 转换成Document
 		Document document = reader.read(new File(XMLPath));
 		// 获取根节点元素对象
-		Element root = document.getRootElement();
+		Element root = document.getRootElement().element("root");
 		// 遍历
-		listNodes(root);
+		return listNodes(root);
 	}
-
+	
 	// 遍历当前节点下的所有节点
-	public void listNodes(Element node) {
-		System.out.println("当前节点的名称：" + node.getName());
+	public XMLElement listNodes(Element node) {
+		XMLElement xmlNode = new XMLElement();
+		
+		String name = node.getName();
+		xmlNode.setName(name);
+		//System.out.println("当前节点的名称：" + name);
 		// 首先获取当前节点的所有属性节点
 		List<Attribute> list = node.attributes();
 		// 遍历属性节点
 		for (Attribute attribute : list) {
-			System.out.println("属性" + attribute.getName() + ":" + attribute.getValue());
+			XMLAttribute xmlAttribute = new XMLAttribute();
+
+			String attributeName = attribute.getName();
+			String attributeVaule = attribute.getValue();
+			String attributeText = "";
+			String attributeLabel = "";
+			XMLAttribute xsdAttribute = map.get(name).getAttribute(attributeName);
+			if(xsdAttribute != null){
+				attributeText = xsdAttribute.getDocunmentText();
+				attributeLabel =  xsdAttribute.getDocumentLabel();
+			}
+			
+			xmlAttribute.setName(attributeName);
+			xmlAttribute.setDocunmentText(attributeText);
+			xmlAttribute.setDocumentLabel(attributeLabel);
+			xmlAttribute.setValue(attributeVaule);
+
+			xmlNode.addAttribute(attributeName, xmlAttribute);
 		}
 		// 如果当前节点内容不为空，则输出
 		if (!(node.getTextTrim().equals(""))) {
-			System.out.println(node.getName() + "：" + node.getText());
+			xmlNode.setXMLText(node.getText());
 		}
 		// 同时迭代当前节点下面的所有子节点
 		// 使用递归
 		Iterator<Element> iterator = node.elementIterator();
 		while (iterator.hasNext()) {
 			Element e = iterator.next();
-			listNodes(e);
+			XMLElement xmlChild = listNodes(e);
+			xmlNode.addElement(e.getName(), xmlChild);
 		}
+		return xmlNode;
 	}
 
 	public static void main(String[] args) {
@@ -61,10 +85,11 @@ public class XMLReader {
 			XMLReader xmlReader = new XMLReader();
 			XSDReader xsdReader = new XSDReader();
 			Map<String, XSDElement> nodes = xsdReader.paserXSD("RmConfig.cxsd");
-			JSONObject jsonObject = JSONObject.fromObject(nodes);
+			xmlReader.map = nodes;
+			XMLElement xmlElement = xmlReader.parserXML("rm.cfg");
 			
-			JSONArray jsonArray = JSONArray.fromObject(nodes);
-			
+			JSONObject jsonObject = JSONObject.fromObject(xmlElement);	
+			JSONArray jsonArray = JSONArray.fromObject(nodes);	
 			String json = jsonArray.toString();
 			
 			//System.out.println(json);
@@ -80,7 +105,7 @@ public class XMLReader {
 
 	}
 
-	public String showJson() {
+	/*public String showJson() {
 		List jsonList = new ArrayList();
 		List rootList = new ArrayList();
 		Map rootMap = new HashMap<String, Object>();
@@ -159,6 +184,6 @@ public class XMLReader {
 		}
 		System.out.println("json========" + json);
 		return json;
-	}
+	}*/
 		 
 }

@@ -139,6 +139,7 @@ public class XSDReader {
 		Node annotationText = element.selectSingleNode(xsdPath + "[@name=\""
 				+ nodeName + "\"]/" + getXSDDefaultNamespace() + "annotation/"
 				+ getXSDDefaultNamespace() + "documentation");
+		
 
 		if (annotationText != null)
 			xsdNode.getAnnotation().setDocunmentText(
@@ -183,7 +184,7 @@ public class XSDReader {
 				if (attributeLabel != null)
 					label = attributeLabel.attributeValue("label");
 
-				XSDAttribute XSDAttribute = new XSDAttribute();
+				XMLAttribute XSDAttribute = new XMLAttribute();
 
 				XSDAttribute.setName(attributeName);
 				XSDAttribute.setDocunmentText(text);
@@ -212,24 +213,6 @@ public class XSDReader {
 		addElement.setName(name);
 		map.put(name, addElement);
 		return addElement;
-	}
-
-	private void addNodeList(XSDElement node) {
-		boolean update = true;
-		Iterator iter = map.entrySet().iterator();
-		while (iter.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			String name = (String) entry.getKey();
-			XSDElement val = (XSDElement) entry.getValue();
-			if (name.equals(node.getName())) {
-				if (node.getAnnotation().getDocumentLabel() == null) {
-					update = false;
-				}
-			}
-		}
-		if (update) {
-			map.put(node.getName(), node);
-		}
 	}
 
 	public static void main(String[] args) {

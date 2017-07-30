@@ -1,12 +1,12 @@
 package lwg.nwpu.ides.Util;
 
-public class XSDAttribute {
+public class XMLAttribute {
 
 	//属性名
 	private String name;
 	
 	//属性值
-	private String value;
+	private String value = "";
 
 	// 文档名
 	private String documentLabel;
